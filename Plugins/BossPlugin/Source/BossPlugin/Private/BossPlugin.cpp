@@ -2,6 +2,8 @@
 
 #include "BossPlugin.h"
 
+DEFINE_LOG_CATEGORY(LogBossPlugin)
+
 #define LOCTEXT_NAMESPACE "FBossPluginModule"
 
 void FBossPluginModule::StartupModule()
