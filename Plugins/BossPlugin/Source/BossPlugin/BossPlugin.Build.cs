@@ -38,6 +38,7 @@ public class BossPlugin : ModuleRules
 				"Engine",
 				"Slate",
 				"SlateCore",
+				"AIModule",
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);
