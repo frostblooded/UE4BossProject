@@ -2,4 +2,62 @@
 
 
 #include "BossAIController.h"
+#include "BossPlugin.h"
+#include "BehaviorTree/BehaviorTree.h"
+#include "GameFramework/PlayerController.h"
+#include "GameFramework/Pawn.h"
+#include "BehaviorTree/BlackboardComponent.h"
 
+ABossAIController::ABossAIController()
+{
+	BehaviorTreeComponent = CreateDefaultSubobject<UBehaviorTreeComponent>(TEXT("BehaviourTreeComponent"));
+	BlackboardComponent = CreateDefaultSubobject<UBlackboardComponent>(TEXT("BlackboardComponent"));
+}
+
+void ABossAIController::OnPossess(APawn* InPawn)
+{
+	Super::OnPossess(InPawn);
+
+	if (!IsValid(BehaviorTree))
+	{
+		UE_LOG(LogBossPlugin, Error, TEXT("ABossAIController::OnPosses IsValid(BehaviorTree) == false"));
+		return;
+	}
+
+	if (!IsValid(BehaviorTree->BlackboardAsset))
+	{
+		UE_LOG(LogBossPlugin, Error, TEXT("ABossAIController::OnPosses IsValid(BehaviorTree->BlackboardAsset) == false"));
+		return;
+	}
+
+	BlackboardComponent->InitializeBlackboard(*BehaviorTree->BlackboardAsset);
+	BehaviorTreeComponent->StartTree(*BehaviorTree);
+}
+
+void ABossAIController::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	BlackboardComponent->SetValueAsObject(FName(TEXT("Player")), GetPlayer());
+}
+
+AActor* ABossAIController::GetPlayer()
+{
+	UWorld* World = GetWorld();
+
+	if (!IsValid(World))
+	{
+		UE_LOG(LogBossPlugin, Error, TEXT("ABossAIController::GetPlayerLocation IsValid(World) == false"));
+		return nullptr;
+	}
+
+	APlayerController* PlayerController = World->GetFirstPlayerController();
+
+	if (!IsValid(PlayerController))
+	{
+		UE_LOG(LogBossPlugin, Error, TEXT("ABossAIController::GetPlayerLocation IsValid(PlayerController) == false"));
+		return nullptr;
+	}
+
+	return Cast<AActor>(PlayerController->GetPawn());
+}

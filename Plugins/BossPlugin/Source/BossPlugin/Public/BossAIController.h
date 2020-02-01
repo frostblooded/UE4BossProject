@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AIController.h"
+#include "BehaviorTree/BehaviorTreeComponent.h"
 #include "BossAIController.generated.h"
 
 /**
@@ -13,5 +14,19 @@ UCLASS()
 class BOSSPLUGIN_API ABossAIController : public AAIController
 {
 	GENERATED_BODY()
-	
+
+	ABossAIController();
+	virtual void OnPossess(APawn* InPawn) override;
+	virtual void Tick(float DeltaTime) override;
+
+	UPROPERTY(EditDefaultsOnly)
+	UBehaviorTree* BehaviorTree;
+
+	UPROPERTY()
+	UBehaviorTreeComponent* BehaviorTreeComponent;
+
+	UPROPERTY()
+	UBlackboardComponent* BlackboardComponent;
+
+	AActor* GetPlayer();
 };
