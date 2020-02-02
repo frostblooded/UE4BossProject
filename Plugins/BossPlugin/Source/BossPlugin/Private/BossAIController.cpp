@@ -9,6 +9,7 @@
 #include "BossCharacter.h"
 #include "BossAbility.h"
 #include "Math/UnrealMathUtility.h"
+#include "BossPluginUtils.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
 ABossAIController::ABossAIController()
@@ -70,26 +71,6 @@ void ABossAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	BlackboardComponent->SetValueAsObject(FName(TEXT("Player")), GetPlayer());
-}
-
-AActor* ABossAIController::GetPlayer()
-{
-	UWorld* World = GetWorld();
-
-	if (!IsValid(World))
-	{
-		UE_LOG(LogBossPlugin, Error, TEXT("ABossAIController::GetPlayerLocation IsValid(World) == false"));
-		return nullptr;
-	}
-
-	APlayerController* PlayerController = World->GetFirstPlayerController();
-
-	if (!IsValid(PlayerController))
-	{
-		UE_LOG(LogBossPlugin, Error, TEXT("ABossAIController::GetPlayerLocation IsValid(PlayerController) == false"));
-		return nullptr;
-	}
-
-	return Cast<AActor>(PlayerController->GetPawn());
+	APawn* Player = BossPluginUtils::GetPlayer(GetWorld());
+	BlackboardComponent->SetValueAsObject(FName(TEXT("Player")), Player);
 }

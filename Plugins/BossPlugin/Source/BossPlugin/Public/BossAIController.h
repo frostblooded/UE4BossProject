@@ -31,6 +31,4 @@ protected:
 
 	UPROPERTY()
 	UBlackboardComponent* BlackboardComponent;
-
-	AActor* GetPlayer();
 };
