@@ -44,7 +44,7 @@ void ASpike::OnOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other, UPrim
 
 	if (Other == GetOwner())
 	{
-		// Don't affact the actor if he is the owner of the ability
+		// Don't affect the actor if he is the owner of the ability
 		return;
 	}
 
@@ -52,31 +52,59 @@ void ASpike::OnOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other, UPrim
 
 	if (OtherPawn != nullptr)
 	{
-		UImpaleMovementComponent* OtherImpaleMovementComponent = Other->FindComponentByClass<UImpaleMovementComponent>();
+		UImpaleMovementComponent* OtherImpaleMovementComponent = NewObject<UImpaleMovementComponent>(OtherPawn, TEXT("ImpaleMovement"));
+		OtherImpaleMovementComponent->RegisterComponent();
 
 		if (OtherImpaleMovementComponent != nullptr)
 		{
-			DisableInput(OtherPawn);
+			DisablePlayerInput(OtherPawn);
 			OtherImpaleMovementComponent->Start(GetBoxHeight() * 2);
+			OtherImpaleMovementComponent->OnMovementEnd.AddStatic(&ASpike::EnablePlayerInput, OtherPawn);
+		}
+		else
+		{
+			UE_LOG(LogBossPlugin, Error, TEXT("ASpike::OnOverlap() - OtherImpaleMovementComponent == nullptr"));
 		}
 	}
 }
 
-void ASpike::DisableInput(APawn* Pawn)
+void ASpike::DisablePlayerInput(APawn* Pawn)
 {
 	UMovementComponent* OtherMovementComponent = Pawn->GetMovementComponent();
 	UCapsuleComponent* OtherCapsuleComponent = Pawn->FindComponentByClass<UCapsuleComponent>();
 
 	if (IsValid(OtherMovementComponent) == false) {
-		UE_LOG(LogBossPlugin, Error, TEXT("ASpike::OnOverlap() - IsValid(OtherMovementComponent) == false"));
+		UE_LOG(LogBossPlugin, Error, TEXT("ASpike::DisablePlayerInput() - IsValid(OtherMovementComponent) == false"));
+		return;
 	}
 
 	if (IsValid(OtherCapsuleComponent) == false) {
-		UE_LOG(LogBossPlugin, Error, TEXT("ASpike::OnOverlap() - IsValid(OtherCapsuleComponent) == false"));
+		UE_LOG(LogBossPlugin, Error, TEXT("ASpike::DisablePlayerInput() - IsValid(OtherCapsuleComponent) == false"));
+		return;
 	}
 
 	OtherMovementComponent->Deactivate();
 	OtherCapsuleComponent->SetGenerateOverlapEvents(false);
+}
+
+void ASpike::EnablePlayerInput(APawn* Pawn)
+{
+	UMovementComponent* MovementComponent = Pawn->GetMovementComponent();
+
+	if (IsValid(MovementComponent) == false) {
+		UE_LOG(LogBossPlugin, Error, TEXT("ASpike::EnablePlayerInput() - IsValid(MovementComponent) == false"));
+		return;
+	}
+
+	MovementComponent->Activate(true);
+	UCapsuleComponent* CapsuleComponent = Pawn->FindComponentByClass<UCapsuleComponent>();
+
+	if (IsValid(CapsuleComponent) == false) {
+		UE_LOG(LogBossPlugin, Error, TEXT("ASpike::EnablePlayerInput() - IsValid(CapsuleComponent) == false"));
+		return;
+	}
+
+	CapsuleComponent->SetGenerateOverlapEvents(true);
 }
 
 void ASpike::BeginPlay()

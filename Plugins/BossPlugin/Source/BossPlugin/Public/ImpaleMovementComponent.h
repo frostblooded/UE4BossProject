@@ -13,7 +13,6 @@ class BOSSPLUGIN_API UImpaleMovementComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:	
-	// Sets default values for this component's properties
 	UImpaleMovementComponent();
 
 	void Start(float NewMovementAmplitude);
@@ -24,13 +23,11 @@ public:
 	DECLARE_MULTICAST_DELEGATE(OnMovementEndSignature);
 	OnMovementEndSignature OnMovementEnd;
 protected:
-	// Called when the game starts
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere, Category = Gameplay)
 	float Speed = 1000;
 public:	
-	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	float MovementAmplitude = 100;

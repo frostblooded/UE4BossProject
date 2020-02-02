@@ -40,10 +40,10 @@ protected:
 	void DestroySelf();
 
 	UFUNCTION()
-	void DisableInput(APawn* Pawn);
+	static void DisablePlayerInput(APawn* Pawn);
 
 	UFUNCTION()
-	void EnableInput(APawn* Pawn);
+	static void EnablePlayerInput(APawn* Pawn);
 
 private:
 	FVector GetSpawnLocation();
