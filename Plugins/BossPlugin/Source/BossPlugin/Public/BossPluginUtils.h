@@ -8,7 +8,7 @@
 /**
  * 
  */
-static class BOSSPLUGIN_API BossPluginUtils
+static class BOSSPLUGIN_API FBossPluginUtils
 {
 public:
 	static APawn* GetPlayer(UWorld* World);

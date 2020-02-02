@@ -71,6 +71,6 @@ void ABossAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	APawn* Player = BossPluginUtils::GetPlayer(GetWorld());
+	APawn* Player = FBossPluginUtils::GetPlayer(GetWorld());
 	BlackboardComponent->SetValueAsObject(FName(TEXT("Player")), Player);
 }

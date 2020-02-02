@@ -6,7 +6,7 @@
 #include "Engine/World.h"
 #include "GameFramework/PlayerController.h"
 
-static APawn* GetPlayer(UWorld* World)
+APawn* FBossPluginUtils::GetPlayer(UWorld* World)
 {
 	if (IsValid(World) == false)
 	{
@@ -25,7 +25,7 @@ static APawn* GetPlayer(UWorld* World)
 	return PlayerController->GetPawn();
 }
 
-static FVector GetPlayerLocation(UWorld* World)
+FVector FBossPluginUtils::GetPlayerLocation(UWorld* World)
 {
 	APawn* PlayerPawn = GetPlayer(World);
 
