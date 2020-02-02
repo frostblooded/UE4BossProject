@@ -15,6 +15,10 @@ class BOSSPLUGIN_API ABossAIController : public AAIController
 {
 	GENERATED_BODY()
 
+public:
+	void UseRandomAbility();
+
+protected:
 	ABossAIController();
 	virtual void OnPossess(APawn* InPawn) override;
 	virtual void Tick(float DeltaTime) override;

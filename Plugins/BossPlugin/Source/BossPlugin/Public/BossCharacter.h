@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "BossAbility.h"
 #include "BossCharacter.generated.h"
 
 UCLASS()
@@ -12,18 +13,47 @@ class BOSSPLUGIN_API ABossCharacter : public ACharacter
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
 	ABossCharacter();
 
+	UPROPERTY(EditDefaultsOnly)
+	TArray<UBossAbility*> PhaseOneAbilitiesTemplates;
+
+	UPROPERTY(EditDefaultsOnly)
+	TArray<UBossAbility*> PhaseTwoAbilitiesTemplates;
+
+	UPROPERTY(EditDefaultsOnly)
+	TArray<UBossAbility*> PhaseThreeAbilitiesTemplates;
+	
+	UPROPERTY(EditDefaultsOnly)
+	float MaxHealth = 100;
+
+	UPROPERTY()
+	float Health;
+
+	UPROPERTY(EditAnywhere)
+	float PhaseTwoThreshold = 70;
+
+	UPROPERTY(EditAnywhere)
+	float PhaseThreeThreshold = 30;
+
+	UFUNCTION()
+	int GetPhase();
+
+	UFUNCTION()
+	TArray<UBossAbility*> GetPhaseAbilities();
+
+	UFUNCTION()
+	UBossAbility* GetRandomAbility();
+
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	UPROPERTY()
+	TArray<UBossAbility*> PhaseOneAbilitiesInstances;
 
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	UPROPERTY()
+	TArray<UBossAbility*> PhaseTwoAbilitiesInstances;
 
+	UPROPERTY()
+	TArray<UBossAbility*> PhaseThreeAbilitiesInstances;
 };

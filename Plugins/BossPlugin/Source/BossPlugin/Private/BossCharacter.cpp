@@ -2,33 +2,60 @@
 
 
 #include "BossCharacter.h"
+#include "BossPlugin.h"
 
-// Sets default values
 ABossCharacter::ABossCharacter()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
 }
 
-// Called when the game starts or when spawned
 void ABossCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	Health = MaxHealth;
 }
 
-// Called every frame
-void ABossCharacter::Tick(float DeltaTime)
+int ABossCharacter::GetPhase()
 {
-	Super::Tick(DeltaTime);
+	if (Health > PhaseTwoThreshold)
+	{
+		return 1;
+	}
+	else if (Health > PhaseThreeThreshold && Health <= PhaseTwoThreshold)
+	{
+		return 2;
+	}
 
+	return 3;
 }
 
-// Called to bind functionality to input
-void ABossCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+TArray<UBossAbility*> ABossCharacter::GetPhaseAbilities()
 {
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	int Phase = GetPhase();
 
+	if (Phase == 1)
+	{
+		return PhaseOneAbilitiesInstances;
+	}
+	else if (Phase == 2)
+	{
+		return PhaseTwoAbilitiesInstances;
+	}
+
+	return PhaseThreeAbilitiesInstances;
 }
 
+UBossAbility* ABossCharacter::GetRandomAbility()
+{
+	TArray<UBossAbility*> Abilities = GetPhaseAbilities();
+
+	if (Abilities.Num() == 0)
+	{
+		UE_LOG(LogBossPlugin, Error, TEXT("ABossAIController::UseRandomAbility Abilities.Num == 0"));
+		return nullptr;
+	}
+
+	int RandomAbilityIndex = FMath::RandRange(1, Abilities.Num());
+	return Abilities[RandomAbilityIndex];
+}
