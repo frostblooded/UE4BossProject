@@ -58,7 +58,7 @@ ATopDownARPGCharacter::ATopDownARPGCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = true;
 
-	OnTakeAnyDamage.AddDynamic(this, &ATopDownARPGCharacter::TakeAnyDamage);
+	DamageableComponent = CreateDefaultSubobject<UDamageableComponent>("Damageable");
 }
 
 void ATopDownARPGCharacter::BeginPlay()
@@ -72,8 +72,6 @@ void ATopDownARPGCharacter::BeginPlay()
 		UE_LOG(LogTopDownARPG, Error, TEXT("ATopDownARPGCharacter::BeginPlay CharacterStruct != nullptr"));
 		return;
 	}
-
-	Health = CharacterStruct->MaximumHealth;
 
 	for (const TSubclassOf<UAbility>Template : CharacterStruct->AbilityTemplates)
 	{
@@ -96,29 +94,5 @@ void ATopDownARPGCharacter::Tick(float DeltaSeconds)
 			CursorToWorld->SetWorldLocation(TraceHitResult.Location);
 			CursorToWorld->SetWorldRotation(CursorR);
 		}
-	}
-}
-
-void ATopDownARPGCharacter::TakeAnyDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigateBy, AActor* DamageCauser)
-{
-	UE_LOG(LogTopDownARPG, Display, TEXT("ATopDownARPGCharacter::TakeAnyDamage current health = %f"), (Health - Damage));
-	Health -= Damage;
-	if (Health <= 0.0f)
-	{
-		Death();
-	}
-}
-
-void ATopDownARPGCharacter::Death()
-{
-	UCharacterMovementComponent* Movement = GetCharacterMovement();
-	Movement->MaxWalkSpeed = 0.0f;
-	Movement->bOrientRotationToMovement = false;
-
-
-	ATopDownARPGGameMode* GameMode = Cast<ATopDownARPGGameMode>(GetWorld()->GetAuthGameMode());
-	if (IsValid(GameMode))
-	{
-		GameMode->EndGame(false);
 	}
 }

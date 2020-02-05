@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "DamageableComponent.h"
 #include "GameFramework/Character.h"
 #include "Abilities/Ability.h"
 #include "DataTables/TopDownARPGCharacterStruct.h"
@@ -27,10 +28,6 @@ public:
 	/** Returns CursorToWorld subobject **/
 	FORCEINLINE class UDecalComponent* GetCursorToWorld() { return CursorToWorld; }
 
-	FORCEINLINE float GetHealth() { return Health; }
-
-
-
 	UPROPERTY()
 	TArray<UAbility*> AbilityInstances;
 private:
@@ -52,15 +49,7 @@ private:
 	UPROPERTY(EditAnywhere)
 	FDataTableRowHandle CharacterStatsRow;
 
-	UPROPERTY(EditDefaultsOnly)
-	float MaximumHealth;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	float Health;
-
-	UFUNCTION()
-	void TakeAnyDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigateBy, AActor* DamageCauser);
-
-	void Death();
+	UPROPERTY(VisibleAnywhere)
+	UDamageableComponent* DamageableComponent;
 };
 

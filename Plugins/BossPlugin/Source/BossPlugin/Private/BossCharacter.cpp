@@ -7,22 +7,22 @@
 ABossCharacter::ABossCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
+
+	DamageableComponent = CreateDefaultSubobject<UDamageableComponent>(TEXT("Damageable"));
 }
 
 void ABossCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	Health = MaxHealth;
 }
 
 int ABossCharacter::GetPhase()
 {
-	if (Health > PhaseTwoThreshold)
+	if (DamageableComponent->Health > PhaseTwoThreshold)
 	{
 		return 1;
 	}
-	else if (Health > PhaseThreeThreshold && Health <= PhaseTwoThreshold)
+	else if (DamageableComponent->Health > PhaseThreeThreshold && DamageableComponent->Health <= PhaseTwoThreshold)
 	{
 		return 2;
 	}

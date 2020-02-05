@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "BossAbility.h"
+#include "DamageableComponent.h"
 #include "BossCharacter.generated.h"
 
 UCLASS()
@@ -15,6 +16,9 @@ class BOSSPLUGIN_API ABossCharacter : public ACharacter
 public:
 	ABossCharacter();
 
+	UPROPERTY(VisibleAnywhere)
+	UDamageableComponent* DamageableComponent;
+
 	UPROPERTY(EditDefaultsOnly)
 	TArray<UBossAbility*> PhaseOneAbilitiesTemplates;
 
@@ -23,12 +27,6 @@ public:
 
 	UPROPERTY(EditDefaultsOnly)
 	TArray<UBossAbility*> PhaseThreeAbilitiesTemplates;
-	
-	UPROPERTY(EditDefaultsOnly)
-	float MaxHealth = 100;
-
-	UPROPERTY()
-	float Health;
 
 	UPROPERTY(EditAnywhere)
 	float PhaseTwoThreshold = 70;

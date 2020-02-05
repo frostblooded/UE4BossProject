@@ -44,7 +44,7 @@ void ABossAIController::UseRandomAbility()
 		return;
 	}
 
-	RandomAbility->Activate(FVector());
+	RandomAbility->Activate();
 }
 
 void ABossAIController::OnPossess(APawn* InPawn)

@@ -5,7 +5,7 @@
 #include "BossPlugin.h"
 #include "Engine/World.h"
 
-bool UBossAbility::Activate(FVector AimLocation)
+bool UBossAbility::Activate()
 {
 	if (bIsOffCooldown == false)
 	{
