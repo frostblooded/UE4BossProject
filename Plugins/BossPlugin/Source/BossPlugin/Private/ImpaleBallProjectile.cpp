@@ -15,11 +15,17 @@ AImpaleBallProjectile::AImpaleBallProjectile()
 	SphereComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 	SphereComponent->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
 	SphereComponent->OnComponentBeginOverlap.AddUniqueDynamic(this, &AImpaleBallProjectile::OnOverlap);
+	RootComponent = SphereComponent;
 }
 
 void AImpaleBallProjectile::OnOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	check(Other);
+
+	if (Other == GetInstigator())
+	{
+		return;
+	}
 
 	UDamageableComponent* DamageableComponent = Other->FindComponentByClass<UDamageableComponent>();
 
@@ -30,6 +36,7 @@ void AImpaleBallProjectile::OnOverlap(UPrimitiveComponent* OverlappedComp, AActo
 	}
 
 	DamageableComponent->TakeDamage(ImpactDamage);
+	Destroy();
 }
 
 void AImpaleBallProjectile::BeginPlay()

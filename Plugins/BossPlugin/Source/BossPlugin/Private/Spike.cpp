@@ -7,6 +7,7 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/PawnMovementComponent.h"
+#include "DamageableComponent.h"
 #include "Math/Vector.h"
 
 // Sets default values
@@ -42,12 +43,12 @@ void ASpike::OnOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other, UPrim
 		UE_LOG(LogBossPlugin, Error, TEXT("ASpike::OnOverlap() - IsValid(Other) == false"));
 	}
 
-	if (Other == GetOwner())
+	if (Other == GetInstigator())
 	{
-		// Don't affect the actor if he is the owner of the ability
 		return;
 	}
 
+	DamageActor(Other);
 	APawn* OtherPawn = dynamic_cast<APawn*>(Other);
 
 	if (OtherPawn != nullptr)
@@ -65,6 +66,21 @@ void ASpike::OnOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other, UPrim
 		{
 			UE_LOG(LogBossPlugin, Error, TEXT("ASpike::OnOverlap() - OtherImpaleMovementComponent == nullptr"));
 		}
+	}
+}
+
+void ASpike::DamageActor(AActor* Actor)
+{
+	check(Actor);
+	UDamageableComponent* DamageableComponent = Actor->FindComponentByClass<UDamageableComponent>();
+
+	if (IsValid(DamageableComponent))
+	{
+		DamageableComponent->TakeDamage(Damage);
+	}
+	else
+	{
+		UE_LOG(LogBossPlugin, Error, TEXT("AImpaleBallProjectile::OnOverlap IsValid(Character) == false"));
 	}
 }
 

@@ -27,6 +27,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category = Gameplay)
 	int32 RemainingSpikes = 6;
 
+	UPROPERTY(EditAnywhere)
+	float Damage = 10;
+
 	UPROPERTY(VisibleAnywhere)
 	UImpaleMovementComponent* ImpaleMovementComponent;
 
@@ -50,4 +53,5 @@ protected:
 private:
 	FVector GetSpawnLocation();
 	float GetBoxHeight();
+	void DamageActor(AActor* Actor);
 };

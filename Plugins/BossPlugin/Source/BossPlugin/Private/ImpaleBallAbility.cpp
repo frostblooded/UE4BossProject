@@ -16,7 +16,7 @@ bool UImpaleBallAbility::Activate(int PhaseModifier)
 		return false;
 	}
 
-	AActor* Owner = Cast<AActor>(GetOuter());
+	APawn* Owner = Cast<APawn>(GetOuter());
 
 	if (IsValid(Owner) == false)
 	{
@@ -26,6 +26,7 @@ bool UImpaleBallAbility::Activate(int PhaseModifier)
 
 	FActorSpawnParameters ActorSpawnParameters;
 	ActorSpawnParameters.Owner = Owner;
+	ActorSpawnParameters.Instigator = Owner;
 	ActorSpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
 	FVector PlayerLocation = FBossPluginUtils::GetPlayerLocation(GetWorld());
