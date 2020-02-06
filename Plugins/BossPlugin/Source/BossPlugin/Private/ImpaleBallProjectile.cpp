@@ -3,6 +3,7 @@
 #include "GameFramework/DamageType.h"
 #include "Spike.h"
 #include "GameFramework/Actor.h"
+#include "Math/Rotator.h"
 #include "DamageableComponent.h"
 
 AImpaleBallProjectile::AImpaleBallProjectile()
@@ -44,7 +45,7 @@ void AImpaleBallProjectile::BeginPlay()
 	}
 
 	TimerManager = &World->GetTimerManager();
-	TimerManager->SetTimer(SpikeBurstTimerHandle, this, &AImpaleBallProjectile::OnSpikeBurstTimerExpired, DelayBetweenSpikeBursts);
+	TimerManager->SetTimer(SpikeBurstTimerHandle, this, &AImpaleBallProjectile::OnSpikeBurstTimerExpired, DelayBetweenSpikeBursts, true);
 }
 
 void AImpaleBallProjectile::BeginDestroy()
@@ -94,12 +95,15 @@ void AImpaleBallProjectile::SpawnSpikeBurst()
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	SpawnParams.Instigator = GetInstigator();
 
-	FTransform Transform = GetTransform();
+	float DegreesRotationForSpike = 360 / SpikesToSpawn;
+	FVector RotationRadius(50, 0, 0);
 
 	for (int i = 0; i < SpikesToSpawn; i++)
 	{
-		FVector NewLocation = Transform.GetLocation() + GetActorForwardVector() * 50 * i;
-		ASpike* NewSpike = World->SpawnActor<ASpike>(SpikeTemplate, NewLocation, Transform.GetRotation().Rotator(), SpawnParams);
+		float RotationAngle = DegreesRotationForSpike * i;
+		FVector RotatedVector = RotationRadius.RotateAngleAxis(RotationAngle, FVector::UpVector);
+		FVector RotatedNewLocation = GetActorLocation() + RotatedVector;
+		ASpike* NewSpike = World->SpawnActor<ASpike>(SpikeTemplate, RotatedNewLocation, FRotator(0, RotationAngle, 0), SpawnParams);
 		
 		if (IsValid(NewSpike) == false)
 		{
@@ -113,14 +117,14 @@ int AImpaleBallProjectile::GetSpikesCountInBurst()
 {
 	if (PhaseModifier == 1)
 	{
-		return 3;
+		return 4;
 	}
 	else if (PhaseModifier == 2)
 	{
-		return 5;
+		return 6;
 	}
 
-	return 7;
+	return 8;
 }
 
 int AImpaleBallProjectile::GetSpikeBurstsCap()

@@ -27,7 +27,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category = Gameplay)
 	int32 RemainingSpikes = 6;
 
+	UPROPERTY(VisibleAnywhere)
 	UImpaleMovementComponent* ImpaleMovementComponent;
+
 	virtual void BeginPlay() override;
 
 	UFUNCTION()
