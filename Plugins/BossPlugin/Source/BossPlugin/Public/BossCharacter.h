@@ -20,13 +20,13 @@ public:
 	UDamageableComponent* DamageableComponent;
 
 	UPROPERTY(EditDefaultsOnly)
-	TArray<UBossAbility*> PhaseOneAbilitiesTemplates;
+	TArray<TSubclassOf<UBossAbility>> PhaseOneAbilitiesTemplates;
 
 	UPROPERTY(EditDefaultsOnly)
-	TArray<UBossAbility*> PhaseTwoAbilitiesTemplates;
+	TArray<TSubclassOf<UBossAbility>> PhaseTwoAbilitiesTemplates;
 
 	UPROPERTY(EditDefaultsOnly)
-	TArray<UBossAbility*> PhaseThreeAbilitiesTemplates;
+	TArray<TSubclassOf<UBossAbility>> PhaseThreeAbilitiesTemplates;
 
 	UPROPERTY(EditAnywhere)
 	float PhaseTwoThreshold = 70;
@@ -45,6 +45,7 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	void InstantiateAbilities();
 
 	UPROPERTY()
 	TArray<UBossAbility*> PhaseOneAbilitiesInstances;

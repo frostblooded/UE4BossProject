@@ -44,7 +44,7 @@ void ABossAIController::UseRandomAbility()
 		return;
 	}
 
-	RandomAbility->Activate();
+	RandomAbility->Activate(BossCharacter->GetPhase());
 }
 
 void ABossAIController::OnPossess(APawn* InPawn)

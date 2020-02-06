@@ -16,7 +16,7 @@ class BOSSPLUGIN_API UImpaleBallAbility : public UBossAbility
 	GENERATED_BODY()
 	
 public:
-	virtual bool Activate() override;
+	virtual bool Activate(int PhaseModifier) override;
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AImpaleBallProjectile> ImpaleBallClass;

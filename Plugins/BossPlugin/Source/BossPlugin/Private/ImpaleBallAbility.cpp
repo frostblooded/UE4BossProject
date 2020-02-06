@@ -6,7 +6,7 @@
 #include "BossPluginUtils.h"
 #include "BossPlugin.h"
 
-bool UImpaleBallAbility::Activate()
+bool UImpaleBallAbility::Activate(int PhaseModifier)
 {
 	UWorld* World = GetWorld();
 
@@ -42,6 +42,16 @@ bool UImpaleBallAbility::Activate()
 		UE_LOG(LogBossPlugin, Error, TEXT("UImpaleBallAbility::Activate IsValid(Projectile) == false"));
 		return false;
 	}
+
+	AImpaleBallProjectile* ImpaleBallProjectile = Cast<AImpaleBallProjectile>(Projectile);
+
+	if (IsValid(ImpaleBallProjectile) == false)
+	{
+		UE_LOG(LogBossPlugin, Error, TEXT("UImpaleBallAbility::Activate IsValid(ImpaleBallProjectile) == false"));
+		return false;
+	}
+
+	ImpaleBallProjectile->PhaseModifier = PhaseModifier;
 
 	return true;
 }

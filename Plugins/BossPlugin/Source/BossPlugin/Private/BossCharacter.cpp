@@ -14,6 +14,26 @@ ABossCharacter::ABossCharacter()
 void ABossCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	InstantiateAbilities();
+}
+
+void ABossCharacter::InstantiateAbilities()
+{
+	for (auto Template : PhaseOneAbilitiesTemplates)
+	{
+		PhaseOneAbilitiesInstances.Add(NewObject<UBossAbility>(this, Template));
+	}
+
+	for (auto Template : PhaseTwoAbilitiesTemplates)
+	{
+		PhaseTwoAbilitiesInstances.Add(NewObject<UBossAbility>(this, Template));
+	}
+
+	for (auto Template : PhaseThreeAbilitiesTemplates)
+	{
+		PhaseThreeAbilitiesInstances.Add(NewObject<UBossAbility>(this, Template));
+	}
 }
 
 int ABossCharacter::GetPhase()
@@ -56,6 +76,6 @@ UBossAbility* ABossCharacter::GetRandomAbility()
 		return nullptr;
 	}
 
-	int RandomAbilityIndex = FMath::RandRange(1, Abilities.Num());
+	int RandomAbilityIndex = FMath::RandRange(0, Abilities.Num() - 1);
 	return Abilities[RandomAbilityIndex];
 }

@@ -5,7 +5,7 @@
 #include "BossPlugin.h"
 #include "Engine/World.h"
 
-bool UBossAbility::Activate()
+bool UBossAbility::Activate(int PhaseModifier)
 {
 	if (bIsOffCooldown == false)
 	{
