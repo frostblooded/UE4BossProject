@@ -6,6 +6,7 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "Characters/TopDownARPGCharacter.h"
+#include "DamageableComponent.h"
 #include "TopDownARPG.h"
 
 // Sets default values
@@ -42,10 +43,15 @@ void AProjectile::OnOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other, 
 		OnOverlapParticle->ActivateSystem();
 	}
 
-	ATopDownARPGCharacter* Character = Cast<ATopDownARPGCharacter>(Other);
-	if (IsValid(Character))
+	UDamageableComponent* DamageableComponent = Other->FindComponentByClass<UDamageableComponent>();
+
+	if (IsValid(DamageableComponent))
 	{
-		Character->TakeDamage(Damage, FDamageEvent(UDamageType::StaticClass()), nullptr, this);
+		DamageableComponent->TakeDamage(Damage);
+	}
+	else
+	{
+		UE_LOG(LogTopDownARPG, Error, TEXT("AProjectile::OnOverlap IsValid(DamageableComponent) == false"));
 	}
 
 	if (Destroy() == false)
