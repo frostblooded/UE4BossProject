@@ -4,14 +4,14 @@
 #include "BossCharacter.h"
 #include "BossAbility.h"
 
-void ABossAIController::UseRandomAbility()
+bool ABossAIController::UseRandomAbility()
 {
 	APawn* Pawn = GetPawn();
 
 	if (IsValid(Pawn) == false)
 	{
 		UE_LOG(LogBossPlugin, Error, TEXT("ABossAIController::UseRandomAbility IsValid(Pawn) == false"));
-		return;
+		return false;
 	}
 
 	ABossCharacter* BossCharacter = Cast<ABossCharacter>(Pawn);
@@ -19,7 +19,7 @@ void ABossAIController::UseRandomAbility()
 	if (IsValid(BossCharacter) == false)
 	{
 		UE_LOG(LogBossPlugin, Error, TEXT("ABossAIController::UseRandomAbility IsValid(BossCharacter) == false"));
-		return;
+		return false;
 	}
 
 	UBossAbility* RandomAbility = BossCharacter->GetRandomAbility();
@@ -27,8 +27,8 @@ void ABossAIController::UseRandomAbility()
 	if (IsValid(RandomAbility) == false)
 	{
 		UE_LOG(LogBossPlugin, Error, TEXT("ABossAIController::UseRandomAbility IsValid(RandomAbility) == false"));
-		return;
+		return false;
 	}
 
-	RandomAbility->Activate(BossCharacter->GetPhase());
+	return RandomAbility->TryActivate(BossCharacter->GetPhase());
 }

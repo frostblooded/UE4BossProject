@@ -16,6 +16,9 @@ class BOSSPLUGIN_API ABossCharacter : public ACharacter
 public:
 	ABossCharacter();
 
+	UPROPERTY(EditAnywhere)
+	float MeleeDamage = 10;
+
 	UPROPERTY(VisibleAnywhere)
 	UDamageableComponent* DamageableComponent;
 

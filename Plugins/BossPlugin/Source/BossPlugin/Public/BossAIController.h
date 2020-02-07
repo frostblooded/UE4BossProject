@@ -15,5 +15,5 @@ class BOSSPLUGIN_API ABossAIController : public ABehaviorTreeAIController
 	GENERATED_BODY()
 
 public:
-	void UseRandomAbility();
+	bool UseRandomAbility();
 };

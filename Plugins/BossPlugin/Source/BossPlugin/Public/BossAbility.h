@@ -19,18 +19,17 @@ public:
 	UPROPERTY(EditAnywhere)
 	float CooldownTime = 1.f;
 
-	UFUNCTION(BlueprintCallable)
-	virtual bool Activate(int PhaseModifier);
-
-    UFUNCTION(BlueprintImplementableEvent)
-	void OnActivateBlueprint(AActor* Source);
+	UFUNCTION()
+	virtual bool TryActivate(int PhaseModifier);
 
     UFUNCTION(BlueprintCallable)
 	bool IsOffCooldown() const { return bIsOffCooldown; }
 
 	virtual void BeginDestroy();
 
-private:
+protected:
+	virtual bool Activate(int PhaseModifier) { return false; }
+
 	bool bIsOffCooldown = true;
 	FTimerManager* TimerManager = nullptr;
 	FTimerHandle CooldownTimerHandle;

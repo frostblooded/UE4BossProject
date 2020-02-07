@@ -14,6 +14,12 @@ EBTNodeResult::Type UBTTask_UseRandomAbility::ExecuteTask(UBehaviorTreeComponent
 		return EBTNodeResult::Failed;
 	}
 	
-	BossAIController->UseRandomAbility();
-	return EBTNodeResult::Succeeded;
+	if (BossAIController->UseRandomAbility())
+	{
+		return EBTNodeResult::Succeeded;
+	}
+	else
+	{
+		return EBTNodeResult::Failed;
+	}
 }

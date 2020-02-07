@@ -5,14 +5,17 @@
 #include "BossPlugin.h"
 #include "Engine/World.h"
 
-bool UBossAbility::Activate(int PhaseModifier)
+bool UBossAbility::TryActivate(int PhaseModifier)
 {
 	if (bIsOffCooldown == false)
 	{
 		return false;
 	}
 
+	Activate(PhaseModifier);
+
     UWorld* World = GetWorld();
+
 	if (IsValid(World) == false)
 	{
 		UE_LOG(LogBossPlugin, Error, TEXT("UBossAbility::Activate IsValid(World) == false"));
@@ -23,14 +26,6 @@ bool UBossAbility::Activate(int PhaseModifier)
     TimerManager->SetTimer(CooldownTimerHandle, this, &UBossAbility::OnCooldownTimerExpired, CooldownTime);
     bIsOffCooldown = false;
 
-	AActor* Owner = Cast<AActor>(GetOuter());
-	if (IsValid(Owner) == false)
-	{
-		UE_LOG(LogBossPlugin, Error, TEXT("UBossAbility::Activate IsValid(Owner) == false"));
-		return false;
-	}
-
-    OnActivateBlueprint(Owner);
 	return true;
 }
 
