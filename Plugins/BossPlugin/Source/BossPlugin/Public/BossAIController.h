@@ -3,32 +3,17 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AIController.h"
-#include "BehaviorTree/BehaviorTreeComponent.h"
+#include "BehaviorTreeAIController.h"
 #include "BossAIController.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class BOSSPLUGIN_API ABossAIController : public AAIController
+class BOSSPLUGIN_API ABossAIController : public ABehaviorTreeAIController
 {
 	GENERATED_BODY()
 
 public:
 	void UseRandomAbility();
-
-protected:
-	ABossAIController();
-	virtual void OnPossess(APawn* InPawn) override;
-	virtual void Tick(float DeltaTime) override;
-
-	UPROPERTY(EditDefaultsOnly)
-	UBehaviorTree* BehaviorTree;
-
-	UPROPERTY()
-	UBehaviorTreeComponent* BehaviorTreeComponent;
-
-	UPROPERTY()
-	UBlackboardComponent* BlackboardComponent;
 };

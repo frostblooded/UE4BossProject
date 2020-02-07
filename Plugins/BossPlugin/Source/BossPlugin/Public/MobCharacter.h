@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Particles/ParticleSystemComponent.h"
 #include "GameFramework/Character.h"
 #include "DamageableComponent.h"
 #include "MobCharacter.generated.h"
@@ -17,10 +18,13 @@ public:
 
 	UPROPERTY(VisibleAnywhere)
 	UDamageableComponent* DamageableComponent;
-	
-protected:
-	virtual void BeginPlay() override;
 
-public:	
-	virtual void Tick(float DeltaTime) override;
+	UPROPERTY(VisibleAnywhere)
+	UParticleSystemComponent* ParticleSystemComponent;
+
+	UPROPERTY(EditAnywhere)
+	float ExplosionDamage = 15;
+
+	UPROPERTY(EditAnywhere)
+	float ExplosionRadius = 20;
 };

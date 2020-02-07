@@ -1,22 +1,8 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "BossAIController.h"
 #include "BossPlugin.h"
-#include "BehaviorTree/BehaviorTree.h"
-#include "GameFramework/PlayerController.h"
 #include "GameFramework/Pawn.h"
 #include "BossCharacter.h"
 #include "BossAbility.h"
-#include "Math/UnrealMathUtility.h"
-#include "BossPluginUtils.h"
-#include "BehaviorTree/BlackboardComponent.h"
-
-ABossAIController::ABossAIController()
-{
-	BehaviorTreeComponent = CreateDefaultSubobject<UBehaviorTreeComponent>(TEXT("BehaviourTreeComponent"));
-	BlackboardComponent = CreateDefaultSubobject<UBlackboardComponent>(TEXT("BlackboardComponent"));
-}
 
 void ABossAIController::UseRandomAbility()
 {
@@ -45,32 +31,4 @@ void ABossAIController::UseRandomAbility()
 	}
 
 	RandomAbility->Activate(BossCharacter->GetPhase());
-}
-
-void ABossAIController::OnPossess(APawn* InPawn)
-{
-	Super::OnPossess(InPawn);
-
-	if (!IsValid(BehaviorTree))
-	{
-		UE_LOG(LogBossPlugin, Error, TEXT("ABossAIController::OnPosses IsValid(BehaviorTree) == false"));
-		return;
-	}
-
-	if (!IsValid(BehaviorTree->BlackboardAsset))
-	{
-		UE_LOG(LogBossPlugin, Error, TEXT("ABossAIController::OnPosses IsValid(BehaviorTree->BlackboardAsset) == false"));
-		return;
-	}
-
-	BlackboardComponent->InitializeBlackboard(*BehaviorTree->BlackboardAsset);
-	BehaviorTreeComponent->StartTree(*BehaviorTree);
-}
-
-void ABossAIController::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-	APawn* Player = FBossPluginUtils::GetPlayer(GetWorld());
-	BlackboardComponent->SetValueAsObject(FName(TEXT("Player")), Player);
 }

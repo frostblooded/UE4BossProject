@@ -5,16 +5,7 @@ AMobCharacter::AMobCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 
 	DamageableComponent = CreateDefaultSubobject<UDamageableComponent>(TEXT("Damageable"));
-}
 
-void AMobCharacter::BeginPlay()
-{
-	Super::BeginPlay();
-	
-}
-
-void AMobCharacter::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
+	ParticleSystemComponent = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("ExplosionParticleSystem"));
+	ParticleSystemComponent->bAutoActivate = false;
 }
