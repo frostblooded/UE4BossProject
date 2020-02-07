@@ -8,6 +8,7 @@
 #include "GameFramework/Character.h"
 #include "GameFramework/PawnMovementComponent.h"
 #include "DamageableComponent.h"
+#include "MobCharacter.h"
 #include "Math/Vector.h"
 
 // Sets default values
@@ -43,7 +44,10 @@ void ASpike::OnOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other, UPrim
 		UE_LOG(LogBossPlugin, Error, TEXT("ASpike::OnOverlap() - IsValid(Other) == false"));
 	}
 
-	if (Other == GetInstigator())
+	AMobCharacter* OtherMobCharacter = Cast<AMobCharacter>(Other);
+
+	// Don't affect if you cast the ability or the ability hit a mob
+	if (Other == GetInstigator() || OtherMobCharacter != nullptr)
 	{
 		return;
 	}

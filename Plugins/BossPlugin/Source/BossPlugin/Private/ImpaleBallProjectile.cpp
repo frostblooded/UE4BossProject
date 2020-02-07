@@ -4,6 +4,7 @@
 #include "Spike.h"
 #include "GameFramework/Actor.h"
 #include "Math/Rotator.h"
+#include "MobCharacter.h"
 #include "DamageableComponent.h"
 
 AImpaleBallProjectile::AImpaleBallProjectile()
@@ -22,7 +23,10 @@ void AImpaleBallProjectile::OnOverlap(UPrimitiveComponent* OverlappedComp, AActo
 {
 	check(Other);
 
-	if (Other == GetInstigator())
+	AMobCharacter* OtherMobCharacter = Cast<AMobCharacter>(Other);
+
+	// Don't deal damage if you cast the ability or the ability hit a mob
+	if (Other == GetInstigator() || OtherMobCharacter != nullptr)
 	{
 		return;
 	}
