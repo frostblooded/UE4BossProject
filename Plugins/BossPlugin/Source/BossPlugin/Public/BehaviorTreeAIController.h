@@ -15,10 +15,6 @@ class BOSSPLUGIN_API ABehaviorTreeAIController : public AAIController
 public:
 	ABehaviorTreeAIController();
 
-protected:
-	virtual void OnPossess(APawn* InPawn) override;
-	virtual void Tick(float DeltaTime) override;
-
 	UPROPERTY(EditDefaultsOnly)
 	UBehaviorTree* BehaviorTree;
 
@@ -28,4 +24,7 @@ protected:
 	UPROPERTY()
 	UBlackboardComponent* BlackboardComponent;
 	
+protected:
+	virtual void OnPossess(APawn* InPawn) override;
+	virtual void Tick(float DeltaTime) override;
 };
