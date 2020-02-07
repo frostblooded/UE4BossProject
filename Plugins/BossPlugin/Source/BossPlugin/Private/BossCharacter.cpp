@@ -79,3 +79,19 @@ UBossAbility* ABossCharacter::GetRandomAbility()
 	int RandomAbilityIndex = FMath::RandRange(0, Abilities.Num() - 1);
 	return Abilities[RandomAbilityIndex];
 }
+
+bool ABossCharacter::HasAbilityOffCooldown()
+{
+	TArray<UBossAbility*> Abilities = GetPhaseAbilities();
+	bool bResult = false;
+	
+	for (UBossAbility* Ability : Abilities)
+	{
+		if (Ability->IsOffCooldown())
+		{
+			return true;
+		}
+	}
+	
+	return false;
+}

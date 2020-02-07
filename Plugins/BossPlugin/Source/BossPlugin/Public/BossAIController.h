@@ -16,4 +16,7 @@ class BOSSPLUGIN_API ABossAIController : public ABehaviorTreeAIController
 
 public:
 	bool UseRandomAbility();
+
+protected:
+	virtual void Tick(float DeltaTime) override;
 };

@@ -46,6 +46,9 @@ public:
 	UFUNCTION()
 	UBossAbility* GetRandomAbility();
 
+	UFUNCTION()
+	bool HasAbilityOffCooldown();
+
 protected:
 	virtual void BeginPlay() override;
 	void InstantiateAbilities();
