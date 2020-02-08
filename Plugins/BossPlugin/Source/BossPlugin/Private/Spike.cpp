@@ -64,6 +64,10 @@ void ASpike::OnOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other, UPrim
 		{
 			DisablePlayerInput(OtherPawn);
 			OtherImpaleMovementComponent->Start(GetBoxHeight() * 2);
+
+			// Make player "jump" slower
+			OtherImpaleMovementComponent->Speed /= 2;
+
 			OtherImpaleMovementComponent->OnMovementEnd.AddStatic(&ASpike::EnablePlayerInput, OtherPawn);
 		}
 		else

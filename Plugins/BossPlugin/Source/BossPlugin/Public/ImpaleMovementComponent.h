@@ -22,11 +22,11 @@ public:
 
 	DECLARE_MULTICAST_DELEGATE(OnMovementEndSignature);
 	OnMovementEndSignature OnMovementEnd;
-protected:
-	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere, Category = Gameplay)
 	float Speed = 1000;
+protected:
+	virtual void BeginPlay() override;
 public:	
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
