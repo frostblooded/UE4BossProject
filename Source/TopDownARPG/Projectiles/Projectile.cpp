@@ -49,10 +49,6 @@ void AProjectile::OnOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other, 
 	{
 		DamageableComponent->TakeDamage(Damage);
 	}
-	else
-	{
-		UE_LOG(LogTopDownARPG, Error, TEXT("AProjectile::OnOverlap IsValid(DamageableComponent) == false"));
-	}
 
 	if (Destroy() == false)
 	{
